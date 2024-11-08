@@ -1,0 +1,40 @@
+# Ignore the Data directory
+Data/
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore temporary files
+*.tmp
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore environment variables file
+.env
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore virtual environment directories
+venv/
+env/
+
+# Ignore output files from Jupyter Notebooks
+*.nbconvert.ipynb
+
+# Ignore large data files
+*.csv
+*.h5
+*.hdf5
+*.parquet
+*.pkl
+*.joblib
