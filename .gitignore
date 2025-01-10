@@ -27,6 +27,7 @@ __pycache__/
 # Ignore virtual environment directories
 venv/
 env/
+.venv/
 
 # Ignore output files from Jupyter Notebooks
 *.nbconvert.ipynb
@@ -38,3 +39,6 @@ env/
 *.parquet
 *.pkl
 *.joblib
+
+# MLflow artifacts
+mlruns/
