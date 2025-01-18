@@ -389,7 +389,7 @@ def main():
         cv=5,
         n_jobs=-1,
         verbose=1,
-        n_iter=50,
+        n_iter=25,
         scoring=fbeta_scoring,
         return_train_score=True
         )
