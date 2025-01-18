@@ -38,7 +38,7 @@ import shap
 #%%
 
 def main():
-    debug = False
+    debug = True
 
     def clean_infinity(df, lower_bound=-1e10, upper_bound=1e10):
         """
@@ -291,7 +291,7 @@ def main():
         del cc
         return cc_agg
 
-    num_rows = 10000 if debug else None
+    num_rows = 50000 if debug else None
     df = application_train_test(num_rows)
     bureau = bureau_and_balance(num_rows)
     print("Bureau df shape:", bureau.shape)
@@ -361,7 +361,8 @@ def main():
     # fbêta score de sklearn.metrics
     fbeta_scoring = make_scorer(
         fbeta_score,
-        beta=0.7
+        beta=2,
+        greater_is_better=True
         )
 
     # stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
@@ -388,7 +389,7 @@ def main():
         cv=5,
         n_jobs=-1,
         verbose=1,
-        n_iter=5,
+        n_iter=50,
         scoring=fbeta_scoring,
         return_train_score=True
         )
@@ -406,7 +407,7 @@ def main():
                 "stratification": "False",
                 "class_rebalancing": "True",
                 'rebalancing_strategy': "class_weights : balanced_subsample ou balanced",
-                "bêta": "0.7",
+                "bêta": "2",
                 "numerical_imputer": "SimpleImputer (mean)",
                 "categorical_imputer": "SimpleImputer (most_frequent)",
                 "scaler": "StandardScaler",
@@ -424,7 +425,7 @@ def main():
 
         y_pred = grid_search.predict(X_test)
         report = classification_report(y_test, y_pred, output_dict=True)
-        report['weighted avg']['fbeta-score'] = fbeta_score(y_test, y_pred, beta=0.7)
+        report['weighted avg']['fbeta-score'] = fbeta_score(y_test, y_pred, beta=2)
         mlflow.log_metrics({
             'precision': report['weighted avg']['precision'],
             'recall': report['weighted avg']['recall'],
