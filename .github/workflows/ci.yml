@@ -29,9 +29,13 @@ jobs:
       - name: Install the project
         run: uv sync --all-extras --dev
 
-      - name: Run tests
+      - name: Import test
         run: |
           uv run pytest tests/import_test.py
+
+      - name: Utils test
+        run: |
+          uv run pytest tests/test_utils.py
 
       - name: Define a cache dependency glob
         uses: astral-sh/setup-uv@v5
