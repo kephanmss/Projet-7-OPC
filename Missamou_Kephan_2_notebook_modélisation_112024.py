@@ -1,6 +1,7 @@
-#%% # Pour le calcul
+# Pour le calcul
 import numpy as np
 import pandas as pd
+import polars as pl
 
 # Pour plotter
 import matplotlib.pyplot as plt
@@ -39,6 +40,20 @@ import shap
 
 def main():
     debug = True
+
+    # Compteur du numéro de run, qui évolue à chaque run à partir de 1, valeur stockée dans un fichier texte
+    # Création du fichier si inexistant
+    if not os.path.exists('run_counter.txt'):
+        with open('run_counter.txt', 'w') as f:
+            f.write('0')
+    # Lecture de la valeur actuelle du compteur
+    with open('run_counter.txt', 'r') as f:
+        run_counter = int(f.read())
+    # Incrémentation du compteur
+    run_counter += 1
+    # Écriture de la nouvelle valeur du compteur
+    with open('run_counter.txt', 'w') as f:
+        f.write(str(run_counter))
 
     def clean_infinity(df, lower_bound=-1e10, upper_bound=1e10):
         """
@@ -350,6 +365,7 @@ def main():
     print(f'X_cat_encoded_df shape: {X_cat_encoded_df.shape}')
 
     X_preprocessed = pd.concat([X_num_scaled_df, X_cat_encoded_df], axis=1)
+    X_preprocessed = X_preprocessed.loc[:,[col for col in X_preprocessed.columns if col != 'index']]
 
     # 4. Séparation des données en train et test
     X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42)
@@ -357,13 +373,38 @@ def main():
     # Feature names du train set
 
     feature_names = X_train.columns
+    feature_types = X_train.dtypes
 
+    # Créer un .csv qui contient les noms des features et leur type
+    schema = pd.DataFrame({'features': feature_names,
+                  'type' : feature_types})
+    
+    schema.to_csv('feature_names.csv', index=False, sep=';')
+
+    # Conversion d'une ligne aléatoire en dictionnaire pour les tests, enregistrement dans un fichier texte
+    input_example = X_test.sample(1, random_state=42).to_dict(orient='records')[0]
+    with open('input_example.txt', 'w') as f:
+        f.write(str(input_example))
+    
     # fbêta score de sklearn.metrics
-    fbeta_scoring = make_scorer(
-        fbeta_score,
-        beta=2,
-        greater_is_better=True
-        )
+
+    # Fonction pour calculer un coût à partir d'une matrice de coûts, avec des coûts personnalisable dans un dictionnaire (dont les clés sont VP FP VN FN)
+    def total_cost(y_true, y_pred, costs={'TP': 1, 'FP': -1, 'TN': 1, 'FN': -1}):
+        conf_matrix = confusion_matrix(y_true, y_pred)
+        return np.sum(conf_matrix * np.array([[costs['TN'], costs['FP']], [costs['FN'], costs['TP']]]))
+
+    # Fonction de scoring personnalisée pour make_scorer
+    def cost_scorer_func(y_true, y_pred):
+        costs = {
+            'TP': 10,
+            'FP': -2,
+            'TN': 5,
+            'FN': -8
+        }
+        return total_cost(y_true, y_pred, costs)
+
+    # Scorer personnalisé
+    cost_scorer = make_scorer(cost_scorer_func, greater_is_better=True)
 
     # stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
@@ -372,7 +413,7 @@ def main():
     sgd = SGDClassifier(random_state=42)
     xgb = XGBClassifier(random_state=42)
 
-    param_grid = {
+    param_grid_rf = {
         'n_estimators': [n for n in range(10, 201, 10)], # Up to 200, inclusive
         'max_depth': [d for d in range(2, 21, 2)], # Up to 20 inclusive
         'min_samples_split': [2, 5, 10],
@@ -382,22 +423,51 @@ def main():
         'criterion': ['gini', 'entropy'],
         'max_features': ['sqrt', 'log2', None] # Removed 'auto' as it is deprecated
         }
+    
+    param_grid_reg_log = {
+        'penalty': ['l1', 'l2', 'elasticnet', 'none'],
+        'C': [0.001, 0.01, 0.1, 1, 10, 100],
+        'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],
+        'class_weight': ['balanced', None]
+        }
+    
+    param_grid_sgd = {
+        'loss': ['hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron'],
+        'penalty': ['l2', 'l1', 'elasticnet'],
+        'alpha': [0.0001, 0.001, 0.01, 0.1],
+        'class_weight': ['balanced', None]
+        }
+    
+    param_grid_xgb = {
+        'n_estimators': [n for n in range(10, 201, 10)], # Up to 200, inclusive
+        'max_depth': [d for d in range(2, 21, 2)], # Up to 20 inclusive
+        'learning_rate': [0.001, 0.01, 0.1, 0.2, 0.3],
+        'subsample': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bytree': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bylevel': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bynode': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'reg_alpha': [0, 0.001, 0.005, 0.01, 0.05],
+        'reg_lambda': [0, 0.001, 0.005, 0.01, 0.05],
+        'gamma': [0, 0.01, 0.1, 0.3, 0.5, 1, 1.5, 2],
+        'min_child_weight': [1, 3, 5, 7],
+        'scale_pos_weight': [1, 3, 5, 7],
+    }
 
     grid_search = RandomizedSearchCV(
         estimator=random_forest,
-        param_distributions=param_grid,
+        param_distributions=param_grid_rf,
         cv=5,
         n_jobs=-1,
         verbose=1,
         n_iter=25,
-        scoring=fbeta_scoring,
+        scoring=cost_scorer,
         return_train_score=True
         )
 
-    mlflow.set_experiment("Test projet 7")
+    mlflow.set_experiment("Projet 7 Prod")
     mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-    with mlflow.start_run(run_name="RandomForestClassifier Prod 1"):
+    with mlflow.start_run(run_name=f"RandomForestClassifier, run n°{run_counter}"):
         grid_search.fit(X_train, y_train)
 
         mlflow.set_tags({
@@ -516,8 +586,8 @@ def main():
             'output': 'numpy.ndarray'
         }
 
-        mlflow.sklearn.log_model(best_model, 'model')
-
+        mlflow.sklearn.log_model(best_model, f'model {run_counter}')
+        
 if __name__ == "__main__":
     mlflow.end_run()
     main()

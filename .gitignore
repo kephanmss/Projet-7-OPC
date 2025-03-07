@@ -1,44 +1,13 @@
-# Ignore the Data directory
-Data/
+__pycache__
+.github
+.trash
+.venv
+.dockerignore
+Dockerfile
 
-# Ignore node_modules directory
-node_modules/
+mlruns
+Data
 
-# Ignore log files
-*.log
-
-# Ignore temporary files
-*.tmp
-
-# Ignore compiled Python files
-*.pyc
-__pycache__/
-
-# Ignore environment variables file
-.env
-
-# Ignore IDE specific files
-.vscode/
-.idea/
-
-# Ignore Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Ignore virtual environment directories
-venv/
-env/
-.venv/
-
-# Ignore output files from Jupyter Notebooks
-*.nbconvert.ipynb
-
-# Ignore large data files
-*.csv
-*.h5
-*.hdf5
-*.parquet
-*.pkl
-*.joblib
-
-# MLflow artifacts
-mlruns/
+confusion_matrix.png
+feature_importances.png
+shap_feature_importances.png
