@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.9-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -12,12 +12,8 @@ WORKDIR /app
 COPY requirements.txt .
 COPY feature_names.csv .
 
-# Copy requirements
-COPY requirements.txt .
-
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir uvicorn
+RUN pip install --no-cache-dir uvicorn mlflow pydantic fastapi pandas
 
 # Copier seulement le code de l'application
 COPY . .
