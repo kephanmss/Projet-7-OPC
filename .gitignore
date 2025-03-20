@@ -1,13 +1,47 @@
-__pycache__
-.github
-.trash
-.venv
-.dockerignore
+# Fichiers et dossiers Python
+__pycache__/
+*.py[cod]
+*.so
+
+# Dossiers spécifiques à l'environnement virtuel
+.venv/
+.env/
+.python-version
+
+# Fichiers de logs et de traces
+*.log
+*.out
+*.err
+
+# Fichiers Docker (décommenter si nécessaire)
 # Dockerfile
+# docker-compose.yml
 
-mlruns
-Data
+# Dossiers de tracking MLflow
+mlruns/
+Data/
 
+# Images de visualisation
 confusion_matrix.png
 feature_importances.png
 shap_feature_importances.png
+
+# Rapports de dérive
+drift_report_*
+
+# Fichiers de résultats et de features
+feature_importances.csv
+feature_importances.png
+feature_names.csv
+feature_names.png
+shap_feature_importances.png
+shap_importances.csv
+
+# Dossiers spécifiques à GitHub et aux outils de gestion
+.github/
+.trash/
+
+# Autres fichiers temporaires
+*.bak
+*.swp
+*.swo
