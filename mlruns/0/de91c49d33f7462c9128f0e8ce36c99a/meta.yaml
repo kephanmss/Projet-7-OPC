@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/de91c49d33f7462c9128f0e8ce36c99a/artifacts
+deleted_time: 1733503926795
+end_time: 1732293222616
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: de91c49d33f7462c9128f0e8ce36c99a
+run_name: hilarious-shrimp-152
+run_uuid: de91c49d33f7462c9128f0e8ce36c99a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732293219687
+status: 4
+tags: []
+user_id: kepha

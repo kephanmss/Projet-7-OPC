@@ -1,0 +1,1 @@
+make_scorer(cost_scorer_func, response_method='predict')

@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet_7/mlruns/272563713266354880/24e60ea865604ab4aea052c85ddaeccb/artifacts
+end_time: 1742503738990
+entry_point_name: ''
+experiment_id: '272563713266354880'
+lifecycle_stage: active
+run_id: 24e60ea865604ab4aea052c85ddaeccb
+run_name: BalancedRandomForest, run n°59
+run_uuid: 24e60ea865604ab4aea052c85ddaeccb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1742502457253
+status: 3
+tags: []
+user_id: kepha

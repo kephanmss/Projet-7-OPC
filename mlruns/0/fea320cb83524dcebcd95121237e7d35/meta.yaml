@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/fea320cb83524dcebcd95121237e7d35/artifacts
+deleted_time: 1733503926794
+end_time: 1732293344194
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: fea320cb83524dcebcd95121237e7d35
+run_name: defiant-stoat-59
+run_uuid: fea320cb83524dcebcd95121237e7d35
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732293315285
+status: 4
+tags: []
+user_id: kepha

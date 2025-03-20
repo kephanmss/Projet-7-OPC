@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/23eab6feb4104effac732648354ba84c/artifacts
+deleted_time: 1733503926782
+end_time: 1732295976463
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 23eab6feb4104effac732648354ba84c
+run_name: resilient-frog-719
+run_uuid: 23eab6feb4104effac732648354ba84c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732295970639
+status: 4
+tags: []
+user_id: kepha

@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/36934030440e4871b6133db9951956c7/artifacts
+deleted_time: 1734041572633
+end_time: 1734041169772
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: deleted
+run_id: 36934030440e4871b6133db9951956c7
+run_name: carefree-finch-603
+run_uuid: 36934030440e4871b6133db9951956c7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734041169727
+status: 3
+tags: []
+user_id: kepha

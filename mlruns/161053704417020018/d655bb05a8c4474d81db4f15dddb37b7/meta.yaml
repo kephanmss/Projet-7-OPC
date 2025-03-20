@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/d655bb05a8c4474d81db4f15dddb37b7/artifacts
+deleted_time: 1734041914552
+end_time: 1734041849203
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: deleted
+run_id: d655bb05a8c4474d81db4f15dddb37b7
+run_name: thundering-fly-883
+run_uuid: d655bb05a8c4474d81db4f15dddb37b7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734041849158
+status: 3
+tags: []
+user_id: kepha

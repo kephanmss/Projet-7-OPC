@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet_7/mlruns/272563713266354880/7c6019f1efef4ddbbdd839118953db7f/artifacts
+end_time: 1742426131610
+entry_point_name: ''
+experiment_id: '272563713266354880'
+lifecycle_stage: active
+run_id: 7c6019f1efef4ddbbdd839118953db7f
+run_name: RandomForestClassifier, run n°47
+run_uuid: 7c6019f1efef4ddbbdd839118953db7f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1742426117380
+status: 4
+tags: []
+user_id: kepha

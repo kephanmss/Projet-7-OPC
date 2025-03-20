@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/0755a8c5a2ed4b4e9b21e889035cf9de/artifacts
+deleted_time: 1734064115318
+end_time: 1734042190979
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: deleted
+run_id: 0755a8c5a2ed4b4e9b21e889035cf9de
+run_name: capricious-bug-619
+run_uuid: 0755a8c5a2ed4b4e9b21e889035cf9de
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734042190937
+status: 3
+tags: []
+user_id: kepha

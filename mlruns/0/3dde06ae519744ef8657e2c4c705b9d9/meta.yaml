@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/3dde06ae519744ef8657e2c4c705b9d9/artifacts
+deleted_time: 1733503926792
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 3dde06ae519744ef8657e2c4c705b9d9
+run_name: resilient-gnat-572
+run_uuid: 3dde06ae519744ef8657e2c4c705b9d9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732293705848
+status: 1
+tags: []
+user_id: kepha

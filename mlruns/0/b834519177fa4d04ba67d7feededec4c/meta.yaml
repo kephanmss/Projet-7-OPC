@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/b834519177fa4d04ba67d7feededec4c/artifacts
+deleted_time: 1733503926771
+end_time: 1732898054317
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: b834519177fa4d04ba67d7feededec4c
+run_name: defiant-whale-306
+run_uuid: b834519177fa4d04ba67d7feededec4c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732898011688
+status: 4
+tags: []
+user_id: kepha

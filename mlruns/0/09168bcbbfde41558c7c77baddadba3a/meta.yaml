@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/09168bcbbfde41558c7c77baddadba3a/artifacts
+deleted_time: 1733503926761
+end_time: 1732898826111
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 09168bcbbfde41558c7c77baddadba3a
+run_name: fortunate-calf-703
+run_uuid: 09168bcbbfde41558c7c77baddadba3a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732898804195
+status: 4
+tags: []
+user_id: kepha

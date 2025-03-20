@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/167428589703094047/3752d55404ef4aa2ab119a38a0e3274c/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '167428589703094047'
+lifecycle_stage: active
+run_id: 3752d55404ef4aa2ab119a38a0e3274c
+run_name: secretive-hen-665
+run_uuid: 3752d55404ef4aa2ab119a38a0e3274c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732901286940
+status: 1
+tags: []
+user_id: kepha

@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/b66420eabfa14a31a8ceb334d853b484/artifacts
+deleted_time: 1733503926772
+end_time: 1732897012251
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: b66420eabfa14a31a8ceb334d853b484
+run_name: rogue-panda-346
+run_uuid: b66420eabfa14a31a8ceb334d853b484
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732896963085
+status: 4
+tags: []
+user_id: kepha

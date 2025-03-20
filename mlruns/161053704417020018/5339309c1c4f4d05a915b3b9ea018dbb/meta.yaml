@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/5339309c1c4f4d05a915b3b9ea018dbb/artifacts
+end_time: 1734067948141
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: active
+run_id: 5339309c1c4f4d05a915b3b9ea018dbb
+run_name: Régression logistique 3
+run_uuid: 5339309c1c4f4d05a915b3b9ea018dbb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734067926516
+status: 3
+tags: []
+user_id: kepha

@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/79b3a077822d485591bf33a0c4eaccaf/artifacts
+deleted_time: 1733503926772
+end_time: 1732898397596
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 79b3a077822d485591bf33a0c4eaccaf
+run_name: spiffy-cod-415
+run_uuid: 79b3a077822d485591bf33a0c4eaccaf
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732898353512
+status: 4
+tags: []
+user_id: kepha

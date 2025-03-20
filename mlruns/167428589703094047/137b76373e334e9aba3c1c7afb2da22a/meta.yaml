@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/167428589703094047/137b76373e334e9aba3c1c7afb2da22a/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '167428589703094047'
+lifecycle_stage: active
+run_id: 137b76373e334e9aba3c1c7afb2da22a
+run_name: crawling-zebra-660
+run_uuid: 137b76373e334e9aba3c1c7afb2da22a
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732901376261
+status: 1
+tags: []
+user_id: kepha

@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/f5f74dab1a134c9fa4cb684e7fbabec8/artifacts
+deleted_time: 1733503926801
+end_time: null
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: f5f74dab1a134c9fa4cb684e7fbabec8
+run_name: dazzling-bear-965
+run_uuid: f5f74dab1a134c9fa4cb684e7fbabec8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732292932144
+status: 1
+tags: []
+user_id: kepha

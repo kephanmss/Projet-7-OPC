@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/0a210a463cb04ac8af14e5f020f2c90e/artifacts
+end_time: 1734078039053
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: active
+run_id: 0a210a463cb04ac8af14e5f020f2c90e
+run_name: XGBoost 2
+run_uuid: 0a210a463cb04ac8af14e5f020f2c90e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734077526663
+status: 4
+tags: []
+user_id: kepha

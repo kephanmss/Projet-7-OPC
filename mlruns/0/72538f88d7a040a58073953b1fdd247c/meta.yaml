@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/72538f88d7a040a58073953b1fdd247c/artifacts
+deleted_time: 1733503926773
+end_time: 1732296171081
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 72538f88d7a040a58073953b1fdd247c
+run_name: carefree-owl-545
+run_uuid: 72538f88d7a040a58073953b1fdd247c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732296131342
+status: 4
+tags: []
+user_id: kepha

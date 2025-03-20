@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/167428589703094047/eb9cddc260e14b3e9e95dbc2994b2df7/artifacts
+end_time: 1733503647585
+entry_point_name: ''
+experiment_id: '167428589703094047'
+lifecycle_stage: active
+run_id: eb9cddc260e14b3e9e95dbc2994b2df7
+run_name: credit_default test 1
+run_uuid: eb9cddc260e14b3e9e95dbc2994b2df7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1733503553012
+status: 4
+tags: []
+user_id: kepha

@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/e8e29c77ca624aa89b814da582e54315/artifacts
+deleted_time: 1733503926793
+end_time: 1732294245994
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: e8e29c77ca624aa89b814da582e54315
+run_name: colorful-perch-481
+run_uuid: e8e29c77ca624aa89b814da582e54315
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732294243473
+status: 4
+tags: []
+user_id: kepha

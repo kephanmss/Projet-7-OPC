@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/4271afbeae0a4475a5889e77a7aa70bb/artifacts
+deleted_time: 1734041572640
+end_time: 1734040588953
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: deleted
+run_id: 4271afbeae0a4475a5889e77a7aa70bb
+run_name: enthused-pug-272
+run_uuid: 4271afbeae0a4475a5889e77a7aa70bb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734040588896
+status: 3
+tags: []
+user_id: kepha

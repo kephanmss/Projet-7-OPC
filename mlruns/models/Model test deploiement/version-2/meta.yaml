@@ -1,0 +1,16 @@
+aliases: []
+creation_timestamp: 1742503933705
+current_stage: None
+description: ''
+last_updated_timestamp: 1742503933705
+name: Model test deploiement
+run_id: 24e60ea865604ab4aea052c85ddaeccb
+run_link: ''
+source: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet_7/mlruns/272563713266354880/24e60ea865604ab4aea052c85ddaeccb/artifacts/model
+  59
+status: READY
+status_message: null
+storage_location: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet_7/mlruns/272563713266354880/24e60ea865604ab4aea052c85ddaeccb/artifacts/model
+  59
+user_id: null
+version: 2

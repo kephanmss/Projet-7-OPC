@@ -1,0 +1,16 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/161053704417020018/102b1ba401414a568520253112e6d6ab/artifacts
+deleted_time: 1734064115317
+end_time: 1734061918353
+entry_point_name: ''
+experiment_id: '161053704417020018'
+lifecycle_stage: deleted
+run_id: 102b1ba401414a568520253112e6d6ab
+run_name: exultant-quail-869
+run_uuid: 102b1ba401414a568520253112e6d6ab
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734061918288
+status: 3
+tags: []
+user_id: kepha

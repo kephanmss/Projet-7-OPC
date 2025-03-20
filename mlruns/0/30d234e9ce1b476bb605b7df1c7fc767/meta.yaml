@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/30d234e9ce1b476bb605b7df1c7fc767/artifacts
+deleted_time: 1733503926783
+end_time: 1732294345079
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 30d234e9ce1b476bb605b7df1c7fc767
+run_name: respected-lark-265
+run_uuid: 30d234e9ce1b476bb605b7df1c7fc767
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732294342361
+status: 4
+tags: []
+user_id: kepha

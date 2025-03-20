@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/0740ed72266c4396b69bd4c804c53866/artifacts
+deleted_time: 1733503926762
+end_time: 1732900696712
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: 0740ed72266c4396b69bd4c804c53866
+run_name: clean-goat-125
+run_uuid: 0740ed72266c4396b69bd4c804c53866
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732900308087
+status: 4
+tags: []
+user_id: kepha

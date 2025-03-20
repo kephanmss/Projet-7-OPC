@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/167428589703094047/ca531b73b9504c4491b9d1b1f77f90f7/artifacts
+end_time: 1734039620097
+entry_point_name: ''
+experiment_id: '167428589703094047'
+lifecycle_stage: active
+run_id: ca531b73b9504c4491b9d1b1f77f90f7
+run_name: judicious-snail-6
+run_uuid: ca531b73b9504c4491b9d1b1f77f90f7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1734039620048
+status: 3
+tags: []
+user_id: kepha

@@ -8,9 +8,10 @@ ENV PORT=8000
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier le fichier de dépendances uv.lock
+# Copier les fichiers critiques
 COPY uv.lock* .
 COPY pyproject.toml .
+COPY feature_names.csv .
 
 # Installer uv et synchroniser les dépendances
 RUN pip install --no-cache-dir --upgrade uv && \

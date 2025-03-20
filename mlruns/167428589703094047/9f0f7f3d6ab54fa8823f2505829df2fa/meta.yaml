@@ -1,0 +1,15 @@
+artifact_uri: file:///C:/Users/kepha/OneDrive/Documents/Projets/Projet%207/mlruns/167428589703094047/9f0f7f3d6ab54fa8823f2505829df2fa/artifacts
+end_time: null
+entry_point_name: ''
+experiment_id: '167428589703094047'
+lifecycle_stage: active
+run_id: 9f0f7f3d6ab54fa8823f2505829df2fa
+run_name: rumbling-snake-617
+run_uuid: 9f0f7f3d6ab54fa8823f2505829df2fa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732901620483
+status: 1
+tags: []
+user_id: kepha

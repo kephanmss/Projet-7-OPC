@@ -1,0 +1,16 @@
+artifact_uri: mlflow-artifacts:/0/fccf788619b24587942bacc97a1e89b8/artifacts
+deleted_time: 1733503926784
+end_time: 1732294142347
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+run_id: fccf788619b24587942bacc97a1e89b8
+run_name: brawny-cub-237
+run_uuid: fccf788619b24587942bacc97a1e89b8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1732294139852
+status: 4
+tags: []
+user_id: kepha
