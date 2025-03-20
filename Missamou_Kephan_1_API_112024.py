@@ -28,7 +28,7 @@ FeatureModel = create_feature_model(schema_donnees)
 
 # Chemin du modèle MLflow
 model = 'Model test deploiement'
-version = 'Version 2'
+version = '2'
 
 try:
     # Chargement du modèle
