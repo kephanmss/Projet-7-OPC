@@ -3,7 +3,7 @@ __pycache__
 .trash
 .venv
 .dockerignore
-Dockerfile
+# Dockerfile
 
 mlruns
 Data

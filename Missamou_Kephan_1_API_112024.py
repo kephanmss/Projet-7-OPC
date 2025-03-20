@@ -27,12 +27,15 @@ def create_feature_model(df: pd.DataFrame) -> Type[BaseModel]:
 FeatureModel = create_feature_model(schema_donnees)
 
 # Chemin du modèle MLflow
-model_name = "Model test deploiement"
-model_version = 'None'  # Ou la version de ton modèle
-model_uri = f"models:/{model_name}/{model_version}"
+logged_model = "runs:/e8e0f9774f0548338681f56cd0b11538/model 57"
 
-# Chargement du modèle
-model = mlflow.sklearn.load_model(model_uri)
+try:
+    # Chargement du modèle
+    model = mlflow.pyfunc.load_model(logged_model)
+    print(f"Model successfully loaded from {logged_model}")
+except Exception as e:
+    print(f"Error loading model: {str(e)}")
+    raise RuntimeError(f"Failed to load model: {str(e)}")
 
 # Définition de l'application FastAPI
 app = FastAPI()
@@ -53,4 +56,4 @@ def predict_defaut_paiement(data: FeatureModel):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="127.0.0.1", port=port)
