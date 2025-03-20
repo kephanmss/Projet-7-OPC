@@ -1,1 +1,0 @@
-web: uvicorn projet7.Missamou_Kephan_1_API_112024:app --host 0.0.0.0 --port $PORT

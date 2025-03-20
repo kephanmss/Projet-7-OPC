@@ -9,14 +9,15 @@ ENV PORT=8000
 WORKDIR /app
 
 # Copier les fichiers critiques
-COPY uv.lock* .
-COPY pyproject.toml .
+COPY requirements.txt .
 COPY feature_names.csv .
 
-# Installer uv, synchroniser les dépendances et ajouter uvicorn
-RUN pip install --no-cache-dir --upgrade uv && \
-    uv sync --no-cache && \
-    uv add uvicorn --no-cache
+# Copy requirements
+COPY requirements.txt .
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir uvicorn
 
 # Copier seulement le code de l'application
 COPY . .
@@ -25,4 +26,4 @@ COPY . .
 EXPOSE $PORT
 
 # Lancer l'application FastAPI avec uvicorn en utilisant $PORT
-CMD uvicorn projet7.Missamou_Kephan_1_API_112024:app --host 0.0.0.0 --port $PORT
+CMD uvicorn Missamou_Kephan_1_API_112024:app --host 0.0.0.0 --port $PORT
