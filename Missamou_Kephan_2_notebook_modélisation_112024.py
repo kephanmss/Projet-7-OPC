@@ -1,4 +1,4 @@
-#%% # Pour le calcul
+# Pour le calcul
 import numpy as np
 import pandas as pd
 
@@ -15,6 +15,7 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.linear_model import LogisticRegression, SGDClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, make_scorer, fbeta_score, roc_auc_score
+from tqdm import tqdm
 
 # Librairie imbalanced-learn pour le rééquilibrage des classes par undersampling
 # Pas d'undersampling par sélection aléatoire bête et méchante
@@ -35,11 +36,33 @@ from xgboost import XGBClassifier
 
 # Pour les valeurs shapely
 import shap
-#%%
+
+# Try LightGBM instead of RandomForest - much faster
+import lightgbm as lgbm
+
+from sklearn.feature_selection import SelectFromModel
+
+MODEL = 'BalancedRandomForest' # Valeurs possibles : 'RandomForest', 'LogisticRegression', 'SGDClassifier', 'XGBClassifier', 'LGBMClassifier'
+N_ITER_CV = 25
 
 def main():
     debug = True
 
+    # Compteur du numéro de run, qui évolue à chaque run à partir de 1, valeur stockée dans un fichier texte
+    # Création du fichier si inexistant
+    if not os.path.exists('run_counter.txt'):
+        with open('run_counter.txt', 'w') as f:
+            f.write('0')
+    # Lecture de la valeur actuelle du compteur
+    with open('run_counter.txt', 'r') as f:
+        run_counter = int(f.read())
+    # Incrémentation du compteur
+    run_counter += 1
+    # Écriture de la nouvelle valeur du compteur
+    with open('run_counter.txt', 'w') as f:
+        f.write(str(run_counter))
+
+    # Fonction pour nettoyer les données et éviter de travailler avec des valeurs infinies
     def clean_infinity(df, lower_bound=-1e10, upper_bound=1e10):
         """
         Remplace les valeurs infinies par NaN, plafonne les valeurs extrêmes 
@@ -65,6 +88,7 @@ def main():
 
         return df
 
+    # Fonction pour réduire l'utilisation de la mémoire en optimisant les types de données
     def reduce_memory_usage(df):
         """
         Réduit l'utilisation de la mémoire en optimisant les types de données
@@ -91,7 +115,7 @@ def main():
 
         return df
 
-    # One-hot encoding for categorical columns with get_dummies
+    # Fonction pour encoder les variables catégorielles
     def one_hot_encoder(df, nan_as_category = True):
         original_columns = list(df.columns)
         categorical_columns = [col for col in df.columns if df[col].dtype == 'object']
@@ -99,9 +123,9 @@ def main():
         new_columns = [c for c in df.columns if c not in original_columns]
         return df, new_columns
 
-    # Preprocess application_train.csv and application_test.csv
+    # Fonction pour prétraiter les données
     def application_train_test(num_rows = None, nan_as_category = False):
-        # Read data and merge
+        # Lecture des données et fusion des ensembles d'entraînement et de test
         df = pd.read_csv('./Data/application_train.csv', nrows= num_rows)
         test_df = pd.read_csv('./Data/application_test.csv', nrows= num_rows)
         print(f"Train samples: {len(df)}, test samples: {len(test_df)}")
@@ -350,6 +374,7 @@ def main():
     print(f'X_cat_encoded_df shape: {X_cat_encoded_df.shape}')
 
     X_preprocessed = pd.concat([X_num_scaled_df, X_cat_encoded_df], axis=1)
+    X_preprocessed = X_preprocessed.loc[:,[col for col in X_preprocessed.columns if col != 'index']]
 
     # 4. Séparation des données en train et test
     X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42)
@@ -357,73 +382,177 @@ def main():
     # Feature names du train set
 
     feature_names = X_train.columns
+    feature_types = X_train.dtypes
 
-    # fbêta score de sklearn.metrics
-    fbeta_scoring = make_scorer(
-        fbeta_score,
-        beta=2,
-        greater_is_better=True
-        )
+    # Créer un .csv qui contient les noms des features et leur type
+    schema = pd.DataFrame({'features': feature_names,
+                  'type' : feature_types})
+    
+    schema.to_csv('feature_names.csv', index=False, sep=';')
+
+    # Fonction pour calculer un coût à partir d'une matrice de coûts, avec des coûts personnalisable dans un dictionnaire (dont les clés sont VP FP VN FN)
+    def total_cost(y_true, y_pred, costs={'TP': 1, 'FP': -1, 'TN': 1, 'FN': -1}):
+        conf_matrix = confusion_matrix(y_true, y_pred)
+        return np.sum(conf_matrix * np.array([[costs['TN'], costs['FP']], [costs['FN'], costs['TP']]]))
+
+    # Fonction de scoring personnalisée pour make_scorer
+    def cost_scorer_func(y_true, y_pred):
+        costs = {
+            'TP': 10,
+            'FP': -2,
+            'TN': 5,
+            'FN': -8
+        }
+        return total_cost(y_true, y_pred, costs)
+
+    # Scorer personnalisé
+    cost_scorer = make_scorer(cost_scorer_func, greater_is_better=True)
 
     # stratified_kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-
+    print("Instanciation des modèles...")
     random_forest = RandomForestClassifier(random_state=42)
     regression_logistique = LogisticRegression(random_state=42)
     sgd = SGDClassifier(random_state=42)
     xgb = XGBClassifier(random_state=42)
+    lgb = lgbm.LGBMClassifier(random_state=42)
+    blm = BalancedRandomForestClassifier(random_state=42)
 
-    param_grid = {
+    param_grid_rf = {
+        'n_estimators': [50, 100, 150],  # Reduced from 20 values to 3
+        'max_depth': [5, 10, 15],        # Reduced from 10 values to 3
+        'min_samples_split': [2, 10],    # Reduced to 2 values
+        'min_samples_leaf': [1, 4],      # Reduced to 2 values
+        'bootstrap': [True],             # Just use True
+        'class_weight': ['balanced'],    # Just pick one
+        'max_features': ['sqrt', None]   # Reduced to 2 options
+    }
+    
+    param_grid_reg_log = {
+        'penalty': ['l1', 'l2', 'elasticnet', 'none'],
+        'C': [0.001, 0.01, 0.1, 1, 10, 100],
+        'solver': ['newton-cg', 'lbfgs', 'liblinear', 'sag', 'saga'],
+        'class_weight': ['balanced', None]
+        }
+    
+    param_grid_sgd = {
+        'loss': ['hinge', 'log', 'modified_huber', 'squared_hinge', 'perceptron'],
+        'penalty': ['l2', 'l1', 'elasticnet'],
+        'alpha': [0.0001, 0.001, 0.01, 0.1],
+        'class_weight': ['balanced', None]
+        }
+    
+    param_grid_xgb = {
         'n_estimators': [n for n in range(10, 201, 10)], # Up to 200, inclusive
         'max_depth': [d for d in range(2, 21, 2)], # Up to 20 inclusive
-        'min_samples_split': [2, 5, 10],
-        'min_samples_leaf': [1, 2, 4],
-        'bootstrap': [True, False],
-        'class_weight': ['balanced_subsample', 'balanced'],
-        'criterion': ['gini', 'entropy'],
-        'max_features': ['sqrt', 'log2', None] # Removed 'auto' as it is deprecated
-        }
+        'learning_rate': [0.001, 0.01, 0.1, 0.2, 0.3],
+        'subsample': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bytree': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bylevel': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'colsample_bynode': [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        'reg_alpha': [0, 0.001, 0.005, 0.01, 0.05],
+        'reg_lambda': [0, 0.001, 0.005, 0.01, 0.05],
+        'gamma': [0, 0.01, 0.1, 0.3, 0.5, 1, 1.5, 2],
+        'min_child_weight': [1, 3, 5, 7],
+        'scale_pos_weight': [1, 3, 5, 7],
+    }
 
-    grid_search = RandomizedSearchCV(
-        estimator=random_forest,
-        param_distributions=param_grid,
-        cv=5,
-        n_jobs=-1,
-        verbose=1,
-        n_iter=25,
-        scoring=fbeta_scoring,
-        return_train_score=True
-        )
+    param_grid_lgb = {
+        'n_estimators': [50, 100, 150],
+        'max_depth': [5, 10, 15],
+        'learning_rate': [0.01, 0.1, 0.3]
+    }
 
-    mlflow.set_experiment("Test projet 7")
+    param_grid_blm = {
+        'n_estimators': [50, 100, 150],  # Reduced from 20 values to 3
+        'max_depth': [5, 10, 15],        # Reduced from 10 values to 3
+        'min_samples_split': [2, 10],    # Reduced to 2 values
+        'min_samples_leaf': [1, 4],      # Reduced to 2 values
+        'max_features': ['sqrt', None]   # Reduced to 2 options
+    }
+
+    model_map = {
+        'RandomForest': [random_forest, param_grid_rf],
+        'LogisticRegression': [regression_logistique, param_grid_reg_log],
+        'SGDClassifier': [sgd, param_grid_sgd],
+        'XGBClassifier': [xgb, param_grid_xgb],
+        'LGBMClassifier': [lgb, param_grid_lgb],
+        'BalancedRandomForest': [blm, param_grid_blm]
+    }
+
+    model = model_map[MODEL][0]
+    param_grid = model_map[MODEL][1]
+    n_iter_search = N_ITER_CV
+
+    mlflow.set_experiment("Projet 7 Prod")
     mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-    with mlflow.start_run(run_name="RandomForestClassifier Prod 1"):
-        grid_search.fit(X_train, y_train)
+    with mlflow.start_run(run_name=f"RandomForestClassifier, run n°{run_counter}"):
+            
+        grid_search = RandomizedSearchCV(
+            estimator=model,
+            cv=5,
+            n_jobs=2,
+            verbose=3,
+            n_iter=n_iter_search,
+            scoring=cost_scorer,
+            return_train_score=True,
+            param_distributions=param_grid
+        )
 
+        print("Préselection des features...")
+
+        selector = SelectFromModel(RandomForestClassifier(n_estimators=100, random_state=42), 
+                        threshold='median')
+        
+        X_train_selected = selector.fit_transform(X_train, y_train)
+
+        # Get the mask of selected features
+        selected_features_mask = selector.get_support()
+
+        # Get the feature names that were selected
+        selected_feature_names = X_train.columns[selected_features_mask]
+
+        # Convert arrays back to DataFrames with proper column names
+        X_train_selected = pd.DataFrame(X_train_selected, columns=selected_feature_names)
+        X_test_selected = pd.DataFrame(selector.transform(X_test), columns=selected_feature_names)
+
+        print("Qualité des données après sélection des features:")
+        print(f"Nombre de features sélectionnées: {X_train_selected.shape[1]}")
+        print(f"Cela représente {X_train_selected.shape[1] / X_train.shape[1] * 100:.2f}% des features initiales.")
+        print(f"Nombre de valeurs manquantes dans le jeu de données d'entraînement: {X_train_selected.isnull().sum().sum()}")
+        print(f"Nombre de valeurs infinies dans le jeu de données d'entraînement: {np.isinf(X_train_selected).sum().sum()}")
+        # Conversion d'une ligne aléatoire en dictionnaire pour les tests, enregistrement dans un fichier texte
+        input_example = X_train_selected.sample(1, random_state=42).to_dict(orient='records')[0]
+        with open('input_example.txt', 'w') as f:
+            f.write(str(input_example))
+
+        grid_search.fit(X_train_selected, y_train)
+
+        # Log tags dynamically based on current configuration
         mlflow.set_tags({
-                "author": "Missamou Kephan",
-                "model": "RandomForestClassifier",
-                "model_type": "classification",
-                "stratification": "False",
-                "class_rebalancing": "True",
-                'rebalancing_strategy': "class_weights : balanced_subsample ou balanced",
-                "bêta": "2",
-                "numerical_imputer": "SimpleImputer (mean)",
-                "categorical_imputer": "SimpleImputer (most_frequent)",
-                "scaler": "StandardScaler",
-                "feature_engineering": "True",
-                "feature_selection": "False",
-                "hyperparameter_optimization": "True",
-                "optimization_strategy": "RandomizedSearchCV",
-                "cross_validation": "5 folds",
-                "n_iter": "50",
-                "scoring": "fbeta_score"
-                })
+            "author": "Missamou Kephan",
+            "model": MODEL,
+            "model_type": "classification",
+            "stratification": str("StratifiedKFold" in locals() or "StratifiedKFold" in globals()),
+            "class_rebalancing": str(hasattr(model, "class_weight") and model.class_weight is not None),
+            "rebalancing_strategy": f"class_weights: {getattr(model, 'class_weight', 'None')}",
+            "bêta": "2" if "fbeta_score" in str(cost_scorer) else "None",
+            "numerical_imputer": f"SimpleImputer ({num_imputer.strategy})",
+            "categorical_imputer": f"SimpleImputer ({cat_imputer.strategy})",
+            "scaler": type(scaler).__name__,
+            "feature_engineering": "True",
+            "feature_selection": str(hasattr(locals(), "selector") or "SelectFromModel" in globals()),
+            "hyperparameter_optimization": str(n_iter_search > 0),
+            "optimization_strategy": "RandomizedSearchCV",
+            "cross_validation": f"{grid_search.cv} folds",
+            "n_iter": str(n_iter_search),
+            "scoring": getattr(cost_scorer, "__name__", str(cost_scorer))
+        })
 
         best_params = grid_search.best_params_
         mlflow.log_params(best_params)
 
-        y_pred = grid_search.predict(X_test)
+        y_pred = grid_search.predict(X_test_selected)
         report = classification_report(y_test, y_pred, output_dict=True)
         report['weighted avg']['fbeta-score'] = fbeta_score(y_test, y_pred, beta=2)
         mlflow.log_metrics({
@@ -516,8 +645,8 @@ def main():
             'output': 'numpy.ndarray'
         }
 
-        mlflow.sklearn.log_model(best_model, 'model')
-
+        mlflow.sklearn.log_model(best_model, f'model {run_counter}')
+        
 if __name__ == "__main__":
     mlflow.end_run()
     main()
