@@ -10,6 +10,7 @@ WORKDIR /app
 
 # Copier le fichier de dépendances uv.lock
 COPY uv.lock* .
+COPY pyproject.toml .
 
 # Installer uv et synchroniser les dépendances
 RUN pip install --no-cache-dir --upgrade uv && \
