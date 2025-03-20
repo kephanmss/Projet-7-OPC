@@ -12,6 +12,7 @@ dependencies = [
     "numpy<2.0.0",
     "pandas>=2.2.3",
     "plotly>=6.0.0",
+    "pytest>=8.3.5",
     "scikit-learn>=1.6.1",
     "seaborn>=0.13.2",
     "shap>=0.47.0",
