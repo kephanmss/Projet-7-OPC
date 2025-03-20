@@ -13,9 +13,10 @@ COPY uv.lock* .
 COPY pyproject.toml .
 COPY feature_names.csv .
 
-# Installer uv et synchroniser les dépendances
+# Installer uv, synchroniser les dépendances et ajouter uvicorn
 RUN pip install --no-cache-dir --upgrade uv && \
-    uv sync --no-cache
+    uv sync --no-cache && \
+    uv add uvicorn --no-cache
 
 # Copier seulement le code de l'application
 COPY . .
