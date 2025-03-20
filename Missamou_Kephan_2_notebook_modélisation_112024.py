@@ -43,7 +43,7 @@ import lightgbm as lgbm
 from sklearn.feature_selection import SelectFromModel
 
 MODEL = 'BalancedRandomForest' # Valeurs possibles : 'RandomForest', 'LogisticRegression', 'SGDClassifier', 'XGBClassifier', 'LGBMClassifier'
-N_ITER_CV = 25
+N_ITER_CV = 50
 
 def main():
     debug = True
@@ -379,17 +379,6 @@ def main():
     # 4. Séparation des données en train et test
     X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42)
 
-    # Feature names du train set
-
-    feature_names = X_train.columns
-    feature_types = X_train.dtypes
-
-    # Créer un .csv qui contient les noms des features et leur type
-    schema = pd.DataFrame({'features': feature_names,
-                  'type' : feature_types})
-    
-    schema.to_csv('feature_names.csv', index=False, sep=';')
-
     # Fonction pour calculer un coût à partir d'une matrice de coûts, avec des coûts personnalisable dans un dictionnaire (dont les clés sont VP FP VN FN)
     def total_cost(y_true, y_pred, costs={'TP': 1, 'FP': -1, 'TN': 1, 'FN': -1}):
         conf_matrix = confusion_matrix(y_true, y_pred)
@@ -486,7 +475,7 @@ def main():
     mlflow.set_experiment("Projet 7 Prod")
     mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-    with mlflow.start_run(run_name=f"RandomForestClassifier, run n°{run_counter}"):
+    with mlflow.start_run(run_name=f"{MODEL}, run n°{run_counter}"):
             
         grid_search = RandomizedSearchCV(
             estimator=model,
@@ -515,6 +504,17 @@ def main():
         # Convert arrays back to DataFrames with proper column names
         X_train_selected = pd.DataFrame(X_train_selected, columns=selected_feature_names)
         X_test_selected = pd.DataFrame(selector.transform(X_test), columns=selected_feature_names)
+
+        # Feature names du train set
+
+        feature_names = X_train_selected.columns
+        feature_types = X_train_selected.dtypes
+
+        # Créer un .csv qui contient les noms des features et leur type
+        schema = pd.DataFrame({'features': feature_names,
+                    'type' : feature_types})
+        
+        schema.to_csv('feature_names.csv', index=False, sep=';')
 
         print("Qualité des données après sélection des features:")
         print(f"Nombre de features sélectionnées: {X_train_selected.shape[1]}")
@@ -603,6 +603,8 @@ def main():
 
         # Enregistrer l'image des importances des caractéristiques en tant qu'artefact
         mlflow.log_artifact('feature_importances.png')
+        feature_importances.to_csv('feature_importances.csv', index=False, sep=';')
+        mlflow.log_artifact('feature_importances.csv')
 
         # Utiliser un échantillon du jeu de données pour le calcul des valeurs SHAP
         X_shap_sample = X_train.sample(1000, random_state=42)
@@ -638,6 +640,8 @@ def main():
 
         # Enregistrer l'image des importances de caractéristiques SHAP en tant qu'artefact
         mlflow.log_artifact('shap_feature_importances.png')
+        shap_importances.to_csv('shap_importances.csv', index=False, sep=';')
+        mlflow.log_artifact('shap_importances.csv')
 
         # Signature, input example et output example
         signature = {
