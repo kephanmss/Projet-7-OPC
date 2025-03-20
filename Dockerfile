@@ -13,7 +13,7 @@ COPY requirements.txt .
 COPY feature_names.csv .
 
 # Install dependencies
-RUN pip install --no-cache-dir uvicorn mlflow pydantic fastapi pandas
+RUN pip install --no-cache-dir uvicorn mlflow pydantic fastapi pandas boto3
 
 # Copier seulement le code de l'application
 COPY . .

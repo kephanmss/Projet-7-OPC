@@ -1,5 +1,6 @@
 import uvicorn
 import mlflow.sklearn
+import mlflow.pyfunc
 from pydantic import BaseModel, create_model
 from fastapi import FastAPI, HTTPException
 from typing import Type
@@ -27,12 +28,11 @@ def create_feature_model(df: pd.DataFrame) -> Type[BaseModel]:
 FeatureModel = create_feature_model(schema_donnees)
 
 # Chemin du modèle MLflow
-model = 'Model test deploiement'
-version = '2'
+model_uri = "s3://projet-7-opc/models/my-model/"
 
 try:
     # Chargement du modèle
-    model = mlflow.sklearn.load_model(f"models:/{model}/{version}")
+    model = mlflow.pyfunc.load_model(model_uri)
     print("Modèle chargé avec succès")
 except Exception as e:
     print("Erreur lors du chargement du modèle")

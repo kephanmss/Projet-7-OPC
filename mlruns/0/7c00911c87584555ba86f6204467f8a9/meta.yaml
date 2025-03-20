@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/7c00911c87584555ba86f6204467f8a9/artifacts
+end_time: 1742511515319
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 7c00911c87584555ba86f6204467f8a9
+run_name: defiant-snake-4
+run_uuid: 7c00911c87584555ba86f6204467f8a9
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1742511512090
+status: 3
+tags: []
+user_id: kepha
