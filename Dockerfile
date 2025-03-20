@@ -17,7 +17,7 @@ RUN pip install --no-cache-dir --upgrade uv && \
     uv sync --no-cache
 
 # Copier seulement le code de l'application
-COPY ./projet7 ./projet7
+COPY . .
 
 # Exposer le port dynamique utilisé par Heroku
 EXPOSE $PORT
