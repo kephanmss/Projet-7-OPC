@@ -48,6 +48,8 @@ def index():
 @app.post("/predict/")
 def predict_defaut_paiement(data: FeatureModel):
     try:
+        model_uri = "s3://projet-7-opc/models/my-model/"
+        model = mlflow.pyfunc.load_model(model_uri)
         data = data.dict()
         df = pd.DataFrame([data])
         prediction = model.predict(df)
