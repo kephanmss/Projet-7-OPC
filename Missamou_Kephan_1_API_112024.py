@@ -1,6 +1,7 @@
 import uvicorn
 import mlflow.sklearn
 import mlflow.pyfunc
+import imblearn
 from pydantic import BaseModel, create_model
 from fastapi import FastAPI, HTTPException
 from typing import Type
@@ -29,6 +30,7 @@ FeatureModel = create_feature_model(schema_donnees)
 
 # Chemin du modèle MLflow
 model_uri = "s3://projet-7-opc/models/my-model/"
+model = mlflow.pyfunc.load_model(model_uri)
 
 try:
     # Chargement du modèle
@@ -48,8 +50,6 @@ def index():
 @app.post("/predict/")
 def predict_defaut_paiement(data: FeatureModel):
     try:
-        model_uri = "s3://projet-7-opc/models/my-model/"
-        model = mlflow.pyfunc.load_model(model_uri)
         data = data.dict()
         df = pd.DataFrame([data])
         prediction = model.predict(df)
